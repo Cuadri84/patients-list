@@ -43,12 +43,13 @@ class MyHomePage extends StatelessWidget {
             const Text(
               "Welcome",
               style: TextStyle(
-                  fontSize: 40,
-                  color: Colors.white,
-                  fontFamily: "Futura",
-                  fontWeight: FontWeight.bold),
+                fontSize: 40,
+                color: Colors.white,
+                fontFamily: "Futura",
+                fontWeight: FontWeight.w100,
+              ),
             ),
-            const SizedBox(height: 60),
+            const SizedBox(height: 90),
             SizedBox(
               width: 270,
               height: 40,
@@ -67,7 +68,7 @@ class MyHomePage extends StatelessWidget {
                   style: TextStyle(
                       color: Color.fromARGB(255, 13, 44, 69),
                       fontSize: 28.0,
-                      fontWeight: FontWeight.w900,
+                      fontWeight: FontWeight.w100,
                       fontFamily: "Futura"),
                 ),
               ),
