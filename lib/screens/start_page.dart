@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:technaid_test/constants/colors.dart';
 import 'package:technaid_test/screens/main_page.dart';
 
 class StartPage extends StatelessWidget {
@@ -44,7 +45,7 @@ class StartPage extends StatelessWidget {
               child: const Text(
                 'Start',
                 style: TextStyle(
-                    color: Color.fromARGB(255, 13, 44, 69),
+                    color: blueLetters,
                     fontSize: 28.0,
                     fontWeight: FontWeight.w100,
                     fontFamily: "Futura"),

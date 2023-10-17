@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:technaid_test/constants/colors.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -25,7 +26,7 @@ class _MainPageState extends State<MainPage> {
             const Text(
               "Hi, Welcome",
               style: TextStyle(
-                color: Color.fromARGB(255, 13, 44, 69),
+                color: blueLetters,
                 fontSize: 28.0,
                 fontWeight: FontWeight.w300,
                 fontFamily: "Futura",
@@ -34,7 +35,7 @@ class _MainPageState extends State<MainPage> {
             Text(
               getCurrentDate(),
               style: const TextStyle(
-                color: Color.fromARGB(255, 13, 44, 69),
+                color: blueLetters,
                 fontSize: 23.0,
                 fontWeight: FontWeight.w100,
                 fontFamily: "Futura",
@@ -42,7 +43,7 @@ class _MainPageState extends State<MainPage> {
             ),
           ],
         ),
-        backgroundColor: Colors.grey[200], // Fondo gris claro
+        backgroundColor: greyBackground,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(20.0),
