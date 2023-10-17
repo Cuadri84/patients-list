@@ -37,7 +37,7 @@ class StartPage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => const MainPage()));
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color.fromARGB(255, 238, 240, 243),
+                backgroundColor: greyBackground,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0),
                 ),
