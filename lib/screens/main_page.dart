@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:technaid_test/constants/colors.dart';
+import 'package:technaid_test/dialogs/dialog_patient.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -71,14 +72,12 @@ class _MainPageState extends State<MainPage> {
                       child: TextField(
                     decoration: InputDecoration(
                       hintText: "Full name",
-                      contentPadding:
-                          const EdgeInsets.all(10.0), // Espacio interior
+                      contentPadding: const EdgeInsets.all(10.0),
                       border: OutlineInputBorder(
-                        borderRadius:
-                            BorderRadius.circular(15.0), // Esquinas redondeadas
+                        borderRadius: BorderRadius.circular(15.0),
                         borderSide: const BorderSide(
-                          color: Colors.black, // Color del borde
-                          width: 1.0, // Ancho del borde
+                          color: Colors.black,
+                          width: 1.0,
                         ),
                       ),
                     ),
@@ -95,9 +94,8 @@ class _MainPageState extends State<MainPage> {
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(
-                          16), // Ajusta el espaciado según tus necesidades
-                      backgroundColor: blueLetters, // Define el color del botón
+                      padding: const EdgeInsets.all(16),
+                      backgroundColor: blueLetters,
                     ),
                     child: const Icon(
                       Icons.search,
@@ -112,7 +110,46 @@ class _MainPageState extends State<MainPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                backgroundColor: Colors.white,
+                content: Stack(
+                  children: <Widget>[
+                    const SizedBox(
+                      width: 500,
+                      height: 391,
+                      child: DialogPatient(),
+                    ),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.grey,
+                          ),
+                          padding: const EdgeInsets.all(1),
+                          child: const Icon(
+                            Icons.close,
+                            color: Colors.white,
+                            size: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
         backgroundColor: blueAddButton,
         shape: const CircleBorder(),
         child: const Icon(
