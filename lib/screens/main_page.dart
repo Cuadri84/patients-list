@@ -4,6 +4,7 @@ import 'package:technaid_test/constants/colors.dart';
 import 'package:technaid_test/dialogs/dialog_patient.dart';
 
 import '../models/patient_model.dart';
+import '../widgets/single_patient.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -26,9 +27,6 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        "Estos son los pacientes: ${patients.map((patient) => "${patient.name} ${patient.surname}").toList()}");
-
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -131,11 +129,8 @@ class _MainPageState extends State<MainPage> {
                       itemCount: patients.length,
                       itemBuilder: (BuildContext context, int index) {
                         final patient = patients[index];
-                        return ListTile(
-                          title: Text('${patient.name} ${patient.surname}'),
-                          subtitle: Text(
-                              'Birthday: ${DateFormat('MMMM dd, yyyy').format(patient.birthday!)}'),
-                          trailing: Text('Gender: ${patient.gender ?? "N/A"}'),
+                        return SinglePatient(
+                          patient: patient,
                         );
                       },
                     ),

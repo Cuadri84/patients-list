@@ -210,7 +210,15 @@ class DialogPatientState extends State<DialogPatient> {
                     Navigator.of(context).pop();
                     widget.updateUI();
                   } else {
-                    print("Error al guardar el paciente. Verifica los campos.");
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'Please fill in all the required fields.',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        backgroundColor: Colors.red, // Fondo rojo
+                      ),
+                    );
                     // Aquí puedes mostrar un mensaje de error o validar los campos según tus necesidades
                   }
                 },
