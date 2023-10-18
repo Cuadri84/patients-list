@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:technaid_test/constants/colors.dart';
 
-class DialogPatient extends StatelessWidget {
-  const DialogPatient({super.key});
+class DialogPatient extends StatefulWidget {
+  const DialogPatient({Key? key}) : super(key: key);
+
+  @override
+  DialogPatientState createState() => DialogPatientState();
+}
+
+class DialogPatientState extends State<DialogPatient> {
+  String? selectedGender;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         const Center(
-            child: Text(
-          "Create new patient",
-          style: TextStyle(
-            fontSize: 23,
-            fontFamily: "Futura",
-            fontWeight: FontWeight.w100,
+          child: Text(
+            "Create new patient",
+            style: TextStyle(
+              fontSize: 23,
+              fontFamily: "Futura",
+              fontWeight: FontWeight.w100,
+            ),
           ),
-        )),
+        ),
         const SizedBox(height: 15),
         TextFormField(
           decoration: InputDecoration(
@@ -66,7 +74,20 @@ class DialogPatient extends StatelessWidget {
           },
         ),
         const SizedBox(height: 8),
-        TextFormField(
+        DropdownButtonFormField<String>(
+          value: selectedGender,
+          onChanged: (value) {
+            setState(() {
+              selectedGender = value;
+            });
+          },
+          items: <String>['male', 'female', 'other']
+              .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
           decoration: InputDecoration(
             hintText: '* Gender',
             hintStyle: const TextStyle(
@@ -87,18 +108,20 @@ class DialogPatient extends StatelessWidget {
             Container(
               width: 120,
               decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 220, 214, 214),
-                  borderRadius: BorderRadius.circular(50),
-                  boxShadow: const [
-                    BoxShadow(
-                        color: Color.fromARGB(255, 209, 204, 204),
-                        offset: Offset(0, 4),
-                        blurRadius: 4,
-                        spreadRadius: 0)
-                  ]),
+                color: const Color.fromARGB(255, 220, 214, 214),
+                borderRadius: BorderRadius.circular(50),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color.fromARGB(255, 209, 204, 204),
+                    offset: Offset(0, 4),
+                    blurRadius: 4,
+                    spreadRadius: 0,
+                  )
+                ],
+              ),
               child: TextButton(
                 onPressed: () {
-                  // Add your cancel action here
+                  Navigator.of(context).pop();
                 },
                 child: const Text(
                   'Cancel',
