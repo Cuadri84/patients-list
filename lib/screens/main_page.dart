@@ -67,13 +67,15 @@ class _MainPageState extends State<MainPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             if (selectedPatientIndex >= 0)
-              Text(
-                '${filteredPatients[selectedPatientIndex].name} ${filteredPatients[selectedPatientIndex].surname}',
-                style: const TextStyle(
-                  color: blueLetters,
-                  fontSize: 28.0,
-                  fontWeight: FontWeight.w300,
-                  fontFamily: "Futura",
+              Expanded(
+                child: Text(
+                  '${filteredPatients[selectedPatientIndex].name} ${filteredPatients[selectedPatientIndex].surname}',
+                  style: const TextStyle(
+                    color: blueLetters,
+                    fontSize: 28.0,
+                    fontWeight: FontWeight.w300,
+                    fontFamily: "Futura",
+                  ),
                 ),
               )
             else
