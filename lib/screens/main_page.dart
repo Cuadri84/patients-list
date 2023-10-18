@@ -21,8 +21,15 @@ class _MainPageState extends State<MainPage> {
   }
 
   List<PatientData> patients = [];
+
   void updateUI() {
     setState(() {});
+  }
+
+  void removePatient(PatientData patient) {
+    setState(() {
+      patients.remove(patient);
+    });
   }
 
   @override
@@ -131,6 +138,9 @@ class _MainPageState extends State<MainPage> {
                         final patient = patients[index];
                         return SinglePatient(
                           patient: patient,
+                          onDelete: () {
+                            removePatient(patient);
+                          },
                         );
                       },
                     ),

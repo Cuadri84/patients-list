@@ -5,7 +5,10 @@ import '../models/patient_model.dart';
 
 class SinglePatient extends StatefulWidget {
   final PatientData patient;
-  const SinglePatient({Key? key, required this.patient}) : super(key: key);
+  final VoidCallback onDelete;
+
+  const SinglePatient({Key? key, required this.patient, required this.onDelete})
+      : super(key: key);
 
   @override
   _SinglePatientState createState() => _SinglePatientState();
@@ -103,9 +106,7 @@ class _SinglePatientState extends State<SinglePatient> {
                   color: redEliminate,
                   size: 33,
                 ),
-                onPressed: () {
-                  // Acción para eliminar el paciente
-                },
+                onPressed: widget.onDelete,
               ),
               const Icon(
                 Icons.arrow_forward_ios,
