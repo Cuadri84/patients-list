@@ -10,6 +10,23 @@ class DialogPatient extends StatefulWidget {
 
 class DialogPatientState extends State<DialogPatient> {
   String? selectedGender;
+  DateTime? selectedDate;
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime picked = (await showDatePicker(
+          context: context,
+          initialDate: selectedDate ?? DateTime.now(),
+          firstDate: DateTime(1900),
+          lastDate: DateTime.now(),
+        )) ??
+        DateTime.now();
+
+    if (picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +85,19 @@ class DialogPatientState extends State<DialogPatient> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15.0),
             ),
+            suffixIcon: InkWell(
+              onTap: () {
+                _selectDate(context);
+              },
+              child: const Icon(Icons.event),
+            ),
           ),
-          onTap: () {
-            // Show date picker here
-          },
+          readOnly: true,
+          controller: TextEditingController(
+            text: selectedDate != null
+                ? "${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year}"
+                : "",
+          ),
         ),
         const SizedBox(height: 8),
         DropdownButtonFormField<String>(
@@ -88,6 +114,8 @@ class DialogPatientState extends State<DialogPatient> {
               child: Text(value),
             );
           }).toList(),
+          icon: const Icon(Icons.expand_more),
+          borderRadius: BorderRadius.circular(15.0),
           decoration: InputDecoration(
             hintText: '* Gender',
             hintStyle: const TextStyle(
