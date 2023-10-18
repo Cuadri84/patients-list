@@ -20,6 +20,8 @@ class _MainPageState extends State<MainPage> {
     return formatter.format(now);
   }
 
+  int selectedPatientIndex = -1; // Índice del paciente seleccionado
+
   List<PatientData> patients = [];
   List<PatientData> filteredPatients = [];
 
@@ -64,24 +66,53 @@ class _MainPageState extends State<MainPage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            const Text(
-              "Hi, Welcome",
-              style: TextStyle(
-                color: blueLetters,
-                fontSize: 28.0,
-                fontWeight: FontWeight.w300,
-                fontFamily: "Futura",
+            if (selectedPatientIndex >= 0)
+              Text(
+                '${filteredPatients[selectedPatientIndex].name} ${filteredPatients[selectedPatientIndex].surname}',
+                style: const TextStyle(
+                  color: blueLetters,
+                  fontSize: 28.0,
+                  fontWeight: FontWeight.w300,
+                  fontFamily: "Futura",
+                ),
+              )
+            else
+              const Text(
+                "Hi, Welcome",
+                style: TextStyle(
+                  color: blueLetters,
+                  fontSize: 28.0,
+                  fontWeight: FontWeight.w300,
+                  fontFamily: "Futura",
+                ),
               ),
-            ),
-            Text(
-              getCurrentDate(),
-              style: const TextStyle(
-                color: blueLetters,
-                fontSize: 23.0,
-                fontWeight: FontWeight.w100,
-                fontFamily: "Futura",
+            if (selectedPatientIndex >= 0)
+              const Row(
+                children: [
+                  Text(
+                    "Device 01H-Jk-012",
+                    style: TextStyle(
+                      color: blueLetters,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w100,
+                      fontFamily: "Futura",
+                    ),
+                  ),
+                  Icon(Icons.bluetooth),
+                  Icon(Icons.battery_charging_full),
+                  Icon(Icons.arrow_drop_down),
+                ],
+              )
+            else
+              Text(
+                getCurrentDate(),
+                style: const TextStyle(
+                  color: blueLetters,
+                  fontSize: 23.0,
+                  fontWeight: FontWeight.w100,
+                  fontFamily: "Futura",
+                ),
               ),
-            ),
           ],
         ),
         backgroundColor: greyBackground,
@@ -92,90 +123,105 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "Patient List",
-              style: TextStyle(
-                fontSize: 30,
-                fontFamily: "Futura",
-                fontWeight: FontWeight.w100,
+      body: GestureDetector(
+        onTap: () {
+          setState(() {
+            selectedPatientIndex = -1;
+          });
+        },
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                "Patient List",
+                style: TextStyle(
+                  fontSize: 30,
+                  fontFamily: "Futura",
+                  fontWeight: FontWeight.w100,
+                ),
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: searchController,
-                      onChanged: (value) {
-                        searchPatients(value);
-                      },
-                      decoration: InputDecoration(
-                        hintText: "Full name",
-                        contentPadding: const EdgeInsets.all(10.0),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                          borderSide: const BorderSide(
-                            color: Colors.black,
-                            width: 1.0,
+              Padding(
+                padding: const EdgeInsets.all(30.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: searchController,
+                        onChanged: (value) {
+                          searchPatients(value);
+                        },
+                        decoration: InputDecoration(
+                          hintText: "Full name",
+                          contentPadding: const EdgeInsets.all(10.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                            borderSide: const BorderSide(
+                              color: Colors.black,
+                              width: 1.0,
+                            ),
                           ),
                         ),
+                        style: const TextStyle(
+                          fontSize: 25,
+                          fontFamily: "Futura",
+                          fontWeight: FontWeight.w100,
+                        ),
                       ),
-                      style: const TextStyle(
-                        fontSize: 25,
+                    ),
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        searchPatients(searchController.text);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        padding: const EdgeInsets.all(16),
+                        backgroundColor: blueLetters,
+                      ),
+                      child: const Icon(
+                        Icons.search,
+                        color: Colors.white,
+                        size: 32,
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              patients.isEmpty
+                  ? const Text(
+                      "Empty List",
+                      style: TextStyle(
+                        fontSize: 50,
+                        color: Colors.redAccent,
                         fontFamily: "Futura",
                         fontWeight: FontWeight.w100,
                       ),
+                    )
+                  : Expanded(
+                      child: ListView.builder(
+                        itemCount: filteredPatients.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final patient = filteredPatients[index];
+                          return SinglePatient(
+                            patient: patient,
+                            isSelected: index ==
+                                selectedPatientIndex, // Comprueba si está seleccionado
+                            onTap: () {
+                              // Maneja el evento onTap y actualiza el índice del paciente seleccionado
+                              setState(() {
+                                selectedPatientIndex = index;
+                              });
+                            },
+                            onDelete: () {
+                              removePatient(patient);
+                            },
+                          );
+                        },
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    onPressed: () {
-                      searchPatients(searchController.text);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(16),
-                      backgroundColor: blueLetters,
-                    ),
-                    child: const Icon(
-                      Icons.search,
-                      color: Colors.white,
-                      size: 32,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            patients.isEmpty
-                ? const Text(
-                    "Empty List",
-                    style: TextStyle(
-                      fontSize: 50,
-                      color: Colors.redAccent,
-                      fontFamily: "Futura",
-                      fontWeight: FontWeight.w100,
-                    ),
-                  )
-                : Expanded(
-                    child: ListView.builder(
-                      itemCount: filteredPatients.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final patient = filteredPatients[index];
-                        return SinglePatient(
-                          patient: patient,
-                          onDelete: () {
-                            removePatient(patient);
-                          },
-                        );
-                      },
-                    ),
-                  ),
-          ],
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
