@@ -21,6 +21,15 @@ class _MainPageState extends State<MainPage> {
   }
 
   List<PatientData> patients = [];
+  List<PatientData> filteredPatients = [];
+
+  TextEditingController searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    filteredPatients = patients;
+  }
 
   void updateUI() {
     setState(() {});
@@ -29,6 +38,22 @@ class _MainPageState extends State<MainPage> {
   void removePatient(PatientData patient) {
     setState(() {
       patients.remove(patient);
+      filteredPatients = patients;
+    });
+  }
+
+  void searchPatients(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        // Si el campo de búsqueda está vacío, muestra todos los pacientes
+        filteredPatients = patients;
+      } else {
+        // Filtra la lista de pacientes según el nombre o el apellido
+        filteredPatients = patients.where((patient) {
+          final fullName = '${patient.name} ${patient.surname}';
+          return fullName.toLowerCase().contains(query.toLowerCase());
+        }).toList();
+      }
     });
   }
 
@@ -84,29 +109,34 @@ class _MainPageState extends State<MainPage> {
               child: Row(
                 children: [
                   Expanded(
-                      child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "Full name",
-                      contentPadding: const EdgeInsets.all(10.0),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15.0),
-                        borderSide: const BorderSide(
-                          color: Colors.black,
-                          width: 1.0,
+                    child: TextField(
+                      controller: searchController,
+                      onChanged: (value) {
+                        searchPatients(value);
+                      },
+                      decoration: InputDecoration(
+                        hintText: "Full name",
+                        contentPadding: const EdgeInsets.all(10.0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                          borderSide: const BorderSide(
+                            color: Colors.black,
+                            width: 1.0,
+                          ),
                         ),
                       ),
+                      style: const TextStyle(
+                        fontSize: 25,
+                        fontFamily: "Futura",
+                        fontWeight: FontWeight.w100,
+                      ),
                     ),
-                    style: const TextStyle(
-                      fontSize: 25,
-                      fontFamily: "Futura",
-                      fontWeight: FontWeight.w100,
-                    ),
-                  )),
-                  const SizedBox(
-                    width: 10,
                   ),
+                  const SizedBox(width: 10),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      searchPatients(searchController.text);
+                    },
                     style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
                       padding: const EdgeInsets.all(16),
@@ -133,9 +163,9 @@ class _MainPageState extends State<MainPage> {
                   )
                 : Expanded(
                     child: ListView.builder(
-                      itemCount: patients.length,
+                      itemCount: filteredPatients.length,
                       itemBuilder: (BuildContext context, int index) {
-                        final patient = patients[index];
+                        final patient = filteredPatients[index];
                         return SinglePatient(
                           patient: patient,
                           onDelete: () {
