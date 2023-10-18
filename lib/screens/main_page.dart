@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:technaid_test/constants/colors.dart';
 import 'package:technaid_test/dialogs/dialog_patient.dart';
 
+import '../models/patient_model.dart';
+
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -17,8 +19,16 @@ class _MainPageState extends State<MainPage> {
     return formatter.format(now);
   }
 
+  List<PatientData> patients = [];
+  void updateUI() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(
+        "Estos son los pacientes: ${patients.map((patient) => "${patient.name} ${patient.surname}").toList()}");
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -106,6 +116,30 @@ class _MainPageState extends State<MainPage> {
                 ],
               ),
             ),
+            patients.isEmpty
+                ? const Text(
+                    "Empty List",
+                    style: TextStyle(
+                      fontSize: 50,
+                      color: Colors.redAccent,
+                      fontFamily: "Futura",
+                      fontWeight: FontWeight.w100,
+                    ),
+                  )
+                : Expanded(
+                    child: ListView.builder(
+                      itemCount: patients.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final patient = patients[index];
+                        return ListTile(
+                          title: Text('${patient.name} ${patient.surname}'),
+                          subtitle: Text(
+                              'Birthday: ${DateFormat('MMMM dd, yyyy').format(patient.birthday!)}'),
+                          trailing: Text('Gender: ${patient.gender ?? "N/A"}'),
+                        );
+                      },
+                    ),
+                  ),
           ],
         ),
       ),
@@ -118,10 +152,13 @@ class _MainPageState extends State<MainPage> {
                 backgroundColor: Colors.white,
                 content: Stack(
                   children: <Widget>[
-                    const SizedBox(
+                    SizedBox(
                       width: 500,
                       height: 391,
-                      child: DialogPatient(),
+                      child: DialogPatient(
+                        patients: patients,
+                        updateUI: updateUI,
+                      ),
                     ),
                     Positioned(
                       top: 0,

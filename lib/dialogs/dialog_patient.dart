@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:technaid_test/constants/colors.dart';
+import '../models/patient_model.dart';
 
 class DialogPatient extends StatefulWidget {
-  const DialogPatient({Key? key}) : super(key: key);
+  final List<PatientData> patients;
+  final Function updateUI; // Agrega el parámetro updateUI de tipo Function
+  const DialogPatient(
+      {Key? key, required this.patients, required this.updateUI})
+      : super(key: key);
 
   @override
   DialogPatientState createState() => DialogPatientState();
@@ -11,6 +16,9 @@ class DialogPatient extends StatefulWidget {
 class DialogPatientState extends State<DialogPatient> {
   String? selectedGender;
   DateTime? selectedDate;
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController surnameController = TextEditingController();
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = (await showDatePicker(
@@ -44,6 +52,7 @@ class DialogPatientState extends State<DialogPatient> {
         ),
         const SizedBox(height: 15),
         TextFormField(
+          controller: nameController, // Controlador para el campo de nombre
           decoration: InputDecoration(
             hintText: '* Name',
             hintStyle: const TextStyle(
@@ -59,6 +68,8 @@ class DialogPatientState extends State<DialogPatient> {
         ),
         const SizedBox(height: 8),
         TextFormField(
+          controller:
+              surnameController, // Controlador para el campo de apellido
           decoration: InputDecoration(
             hintText: '* Surname',
             hintStyle: const TextStyle(
@@ -169,7 +180,39 @@ class DialogPatientState extends State<DialogPatient> {
               ),
               child: TextButton(
                 onPressed: () {
-                  // Add your save action here
+                  // Obtén los valores ingresados en el diálogo
+                  String name = nameController.text;
+                  String surname = surnameController.text;
+                  DateTime? birthday = selectedDate;
+                  String? gender = selectedGender;
+
+                  if (name.isNotEmpty &&
+                      surname.isNotEmpty &&
+                      birthday != null) {
+                    // Crea un nuevo objeto PatientData
+                    PatientData newPatient = PatientData(
+                      name: name,
+                      surname: surname,
+                      birthday: birthday,
+                      gender: gender,
+                    );
+
+                    // Agrega el nuevo paciente a la lista
+                    setState(() {
+                      widget.patients.add(newPatient);
+                    });
+
+                    // print(widget.patients
+                    //     .map((patient) => "${patient.name} ${patient.surname}")
+                    //     .toList());
+
+                    // Cierra el diálogo
+                    Navigator.of(context).pop();
+                    widget.updateUI();
+                  } else {
+                    print("Error al guardar el paciente. Verifica los campos.");
+                    // Aquí puedes mostrar un mensaje de error o validar los campos según tus necesidades
+                  }
                 },
                 child: const Text(
                   'Save',
