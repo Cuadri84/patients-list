@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:technaid_test/screens/start_page.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  //This two lines of code are used to hide the status bar
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   runApp(const MyApp());
 }
 
