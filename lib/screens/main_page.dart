@@ -209,6 +209,7 @@ class _MainPageState extends State<MainPage> {
                             patient: patient,
                             isSelected: index ==
                                 selectedPatientIndex, // Comprueba si está seleccionado
+                            filteredPatients: filteredPatients,
                             onTap: () {
                               // Maneja el evento onTap y actualiza el índice del paciente seleccionado
                               setState(() {

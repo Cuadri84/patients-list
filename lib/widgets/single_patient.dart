@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:technaid_test/constants/colors.dart';
+import '../dialogs/edit_dialog.dart';
 import '../models/patient_model.dart';
 
 class SinglePatient extends StatefulWidget {
   final PatientData patient;
   final bool isSelected;
+  final List<PatientData> filteredPatients; // Pasar solo la lista filtrada
   final VoidCallback onTap;
   final VoidCallback onDelete;
 
@@ -13,6 +15,7 @@ class SinglePatient extends StatefulWidget {
     Key? key,
     required this.patient,
     required this.isSelected,
+    required this.filteredPatients, // Pasar solo la lista filtrada
     required this.onTap,
     required this.onDelete,
   }) : super(key: key);
@@ -112,7 +115,18 @@ class _SinglePatientState extends State<SinglePatient> {
                       size: 33,
                     ),
                     onPressed: () {
-                      // Acción para editar el paciente
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return EditDialog(
+                            patient: widget.patient,
+                            onEdit: (editedPatient) {
+                              // Aquí puedes realizar las actualizaciones necesarias en el paciente.
+                              // Por ejemplo, puedes actualizar filteredPatients.
+                            },
+                          );
+                        },
+                      );
                     },
                   ),
                   IconButton(
