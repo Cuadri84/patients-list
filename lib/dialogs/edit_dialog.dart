@@ -35,7 +35,7 @@ class EditDialogState extends State<EditDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Editar Paciente'),
+      title: const Text('Edit Patient'),
       content: SingleChildScrollView(
         child: Column(
           children: <Widget>[

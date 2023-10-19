@@ -86,6 +86,9 @@ class DialogPatientState extends State<DialogPatient> {
         ),
         const SizedBox(height: 8),
         TextFormField(
+          onTap: () {
+            _selectDate(context);
+          },
           decoration: InputDecoration(
             hintText: '* Birthday',
             hintStyle: const TextStyle(
@@ -97,11 +100,8 @@ class DialogPatientState extends State<DialogPatient> {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15.0),
             ),
-            suffixIcon: InkWell(
-              onTap: () {
-                _selectDate(context);
-              },
-              child: const Icon(Icons.event),
+            suffixIcon: const InkWell(
+              child: Icon(Icons.event),
             ),
           ),
           readOnly: true,
