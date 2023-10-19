@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:technaid_test/constants/colors.dart';
 import '../models/patient_model.dart';
+import '../popups/popup.dart';
 
 class DialogPatient extends StatefulWidget {
   final List<PatientData> patients;
@@ -204,6 +205,19 @@ class DialogPatientState extends State<DialogPatient> {
 
                     // Cierra el diálogo
                     Navigator.of(context).pop();
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        const popup = Popup(
+                            1); // Utiliza el índice 3 para Usuario eliminado
+                        Future.delayed(const Duration(seconds: 2), () {
+                          Navigator.of(context)
+                              .pop(); // Cierra el popup después de 1 segundo
+                        });
+
+                        return popup;
+                      },
+                    );
                     widget.updateUI();
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(

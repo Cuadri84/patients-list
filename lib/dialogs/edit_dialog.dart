@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:technaid_test/models/patient_model.dart';
 
+import '../popups/popup.dart';
+
 class EditDialog extends StatefulWidget {
   final PatientData patient;
   final ValueChanged<PatientData> onEdit;
 
-  EditDialog({Key? key, required this.patient, required this.onEdit})
+  const EditDialog({Key? key, required this.patient, required this.onEdit})
       : super(key: key);
 
   @override
-  _EditDialogState createState() => _EditDialogState();
+  EditDialogState createState() => EditDialogState();
 }
 
-class _EditDialogState extends State<EditDialog> {
+class EditDialogState extends State<EditDialog> {
   TextEditingController nameController = TextEditingController();
   TextEditingController surnameController = TextEditingController();
   TextEditingController birthdayController = TextEditingController();
@@ -33,25 +35,26 @@ class _EditDialogState extends State<EditDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Editar Paciente'),
+      title: const Text('Editar Paciente'),
       content: SingleChildScrollView(
         child: Column(
           children: <Widget>[
             TextField(
               controller: nameController,
-              decoration: InputDecoration(labelText: 'Nombre'),
+              decoration: const InputDecoration(labelText: 'Nombre'),
             ),
             TextField(
               controller: surnameController,
-              decoration: InputDecoration(labelText: 'Apellido'),
+              decoration: const InputDecoration(labelText: 'Apellido'),
             ),
             TextField(
               controller: birthdayController,
-              decoration: InputDecoration(labelText: 'Fecha de Nacimiento'),
+              decoration:
+                  const InputDecoration(labelText: 'Fecha de Nacimiento'),
             ),
             TextField(
               controller: genderController,
-              decoration: InputDecoration(labelText: 'Género'),
+              decoration: const InputDecoration(labelText: 'Género'),
             ),
           ],
         ),
@@ -70,15 +73,28 @@ class _EditDialogState extends State<EditDialog> {
 
             widget.onEdit(editedPatient);
             Navigator.of(context).pop();
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                const popup =
+                    Popup(2); // Utiliza el índice 3 para Usuario eliminado
+                Future.delayed(const Duration(seconds: 2), () {
+                  Navigator.of(context)
+                      .pop(); // Cierra el popup después de 1 segundo
+                });
+
+                return popup;
+              },
+            );
           },
-          child: Text('Guardar'),
+          child: const Text('Guardar'),
         ),
         TextButton(
           onPressed: () {
             // Cierra el diálogo sin realizar cambios
             Navigator.of(context).pop();
           },
-          child: Text('Cancelar'),
+          child: const Text('Cancelar'),
         ),
       ],
     );

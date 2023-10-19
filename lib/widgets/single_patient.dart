@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:technaid_test/constants/colors.dart';
 import '../dialogs/edit_dialog.dart';
 import '../models/patient_model.dart';
+import '../popups/popup.dart';
 
 class SinglePatient extends StatefulWidget {
   final PatientData patient;
@@ -23,10 +24,10 @@ class SinglePatient extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SinglePatientState createState() => _SinglePatientState();
+  SinglePatientState createState() => SinglePatientState();
 }
 
-class _SinglePatientState extends State<SinglePatient> {
+class SinglePatientState extends State<SinglePatient> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -137,7 +138,25 @@ class _SinglePatientState extends State<SinglePatient> {
                       color: redEliminate,
                       size: 33,
                     ),
-                    onPressed: widget.onDelete,
+                    onPressed: () {
+                      // Realiza la lógica de eliminación aquí, por ejemplo:
+                      widget.onDelete();
+
+                      // Luego, muestra el popup "Usuario eliminado".
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          const popup = Popup(
+                              3); // Utiliza el índice 3 para Usuario eliminado
+                          Future.delayed(const Duration(seconds: 2), () {
+                            Navigator.of(context)
+                                .pop(); // Cierra el popup después de 1 segundo
+                          });
+
+                          return popup;
+                        },
+                      );
+                    },
                   ),
                   const Icon(
                     Icons.arrow_forward_ios,

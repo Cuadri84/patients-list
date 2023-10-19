@@ -92,7 +92,6 @@ class _MainPageState extends State<MainPage> {
                 style: TextStyle(
                   color: blueLetters,
                   fontSize: 28.0,
-                  fontWeight: FontWeight.w300,
                   fontFamily: "Futura",
                 ),
               ),
@@ -118,7 +117,7 @@ class _MainPageState extends State<MainPage> {
                 getCurrentDate(),
                 style: const TextStyle(
                   color: blueLetters,
-                  fontSize: 23.0,
+                  fontSize: 20.0,
                   fontWeight: FontWeight.w100,
                   fontFamily: "Futura",
                 ),
