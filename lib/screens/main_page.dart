@@ -59,6 +59,14 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+  void onEdit(PatientData editedPatient, int index) {
+    if (index >= 0 && index < patients.length) {
+      // Asegúrate de que el índice sea válido
+      patients[index] = editedPatient; // Actualiza el paciente en la lista
+      setState(() {}); // Refresca la interfaz de usuario
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -218,6 +226,10 @@ class _MainPageState extends State<MainPage> {
                             },
                             onDelete: () {
                               removePatient(patient);
+                            },
+                            onEdit: (editedPatient) {
+                              onEdit(editedPatient,
+                                  index); // Pasa el índice a la función onEdit
                             },
                           );
                         },

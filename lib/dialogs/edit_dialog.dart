@@ -67,6 +67,7 @@ class _EditDialogState extends State<EditDialog> {
                   DateFormat('MMMM dd, yyyy').parse(birthdayController.text),
               gender: genderController.text,
             );
+
             widget.onEdit(editedPatient);
             Navigator.of(context).pop();
           },

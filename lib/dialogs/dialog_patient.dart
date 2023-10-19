@@ -202,10 +202,6 @@ class DialogPatientState extends State<DialogPatient> {
                       widget.patients.add(newPatient);
                     });
 
-                    // print(widget.patients
-                    //     .map((patient) => "${patient.name} ${patient.surname}")
-                    //     .toList());
-
                     // Cierra el diálogo
                     Navigator.of(context).pop();
                     widget.updateUI();

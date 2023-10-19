@@ -10,14 +10,16 @@ class SinglePatient extends StatefulWidget {
   final List<PatientData> filteredPatients; // Pasar solo la lista filtrada
   final VoidCallback onTap;
   final VoidCallback onDelete;
+  final ValueChanged<PatientData> onEdit; // Agrega el parámetro onEdit
 
   const SinglePatient({
     Key? key,
     required this.patient,
     required this.isSelected,
-    required this.filteredPatients, // Pasar solo la lista filtrada
+    required this.filteredPatients,
     required this.onTap,
     required this.onDelete,
+    required this.onEdit, // Añade el parámetro onEdit
   }) : super(key: key);
 
   @override
@@ -122,7 +124,7 @@ class _SinglePatientState extends State<SinglePatient> {
                             patient: widget.patient,
                             onEdit: (editedPatient) {
                               // Aquí puedes realizar las actualizaciones necesarias en el paciente.
-                              // Por ejemplo, puedes actualizar filteredPatients.
+                              widget.onEdit(editedPatient);
                             },
                           );
                         },
