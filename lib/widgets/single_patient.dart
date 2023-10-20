@@ -177,10 +177,9 @@ class SinglePatientState extends State<SinglePatient> {
                         context: context,
                         builder: (BuildContext context) {
                           // Uses Popup with index 3
-                          const popup = Popup(
-                              3); // Utiliza el índice 3 para Usuario eliminado
+                          const popup = Popup(3);
+                          //Closes popup after 2 seconds
                           Future.delayed(const Duration(seconds: 2), () {
-                            //Closes popup after 2 seconds
                             Navigator.of(context).pop();
                           });
 
