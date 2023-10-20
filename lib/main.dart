@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Onboarding(title: 'Flutter Demo Home Page'),
+      home: const Onboarding(title: 'Technaid Patient List'),
     );
   }
 }

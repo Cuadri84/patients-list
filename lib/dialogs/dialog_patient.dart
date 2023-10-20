@@ -5,7 +5,7 @@ import '../popups/popup.dart';
 
 class DialogPatient extends StatefulWidget {
   final List<PatientData> patients;
-  final Function updateUI; // Agrega el parámetro updateUI de tipo Function
+  final Function updateUI;
   const DialogPatient(
       {Key? key, required this.patients, required this.updateUI})
       : super(key: key);
@@ -21,6 +21,7 @@ class DialogPatientState extends State<DialogPatient> {
   TextEditingController nameController = TextEditingController();
   TextEditingController surnameController = TextEditingController();
 
+  // Opens a date picker dialog to allow the user to select a date.
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = (await showDatePicker(
           context: context,
@@ -52,8 +53,10 @@ class DialogPatientState extends State<DialogPatient> {
           ),
         ),
         const SizedBox(height: 15),
+
+        //Field for the name
         TextFormField(
-          controller: nameController, // Controlador para el campo de nombre
+          controller: nameController,
           decoration: InputDecoration(
             hintText: '* Name',
             hintStyle: const TextStyle(
@@ -68,9 +71,10 @@ class DialogPatientState extends State<DialogPatient> {
           ),
         ),
         const SizedBox(height: 8),
+
+        //Field for the surname
         TextFormField(
-          controller:
-              surnameController, // Controlador para el campo de apellido
+          controller: surnameController,
           decoration: InputDecoration(
             hintText: '* Surname',
             hintStyle: const TextStyle(
@@ -85,6 +89,8 @@ class DialogPatientState extends State<DialogPatient> {
           ),
         ),
         const SizedBox(height: 8),
+
+        //Field to select the birthdate
         TextFormField(
           onTap: () {
             _selectDate(context);
@@ -112,6 +118,8 @@ class DialogPatientState extends State<DialogPatient> {
           ),
         ),
         const SizedBox(height: 8),
+
+        //Field to select the gender
         DropdownButtonFormField<String>(
           value: selectedGender,
           onChanged: (value) {
@@ -160,6 +168,7 @@ class DialogPatientState extends State<DialogPatient> {
                 ],
               ),
               child: TextButton(
+                //Closes the dialog if we don´t want to add a new patient
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -181,7 +190,7 @@ class DialogPatientState extends State<DialogPatient> {
               ),
               child: TextButton(
                 onPressed: () {
-                  // Obtén los valores ingresados en el diálogo
+                  // Gets the values of the input fields of the dialog
                   String name = nameController.text;
                   String surname = surnameController.text;
                   DateTime? birthday = selectedDate;
@@ -190,7 +199,7 @@ class DialogPatientState extends State<DialogPatient> {
                   if (name.isNotEmpty &&
                       surname.isNotEmpty &&
                       birthday != null) {
-                    // Crea un nuevo objeto PatientData
+                    // Creates new patient data
                     PatientData newPatient = PatientData(
                       name: name,
                       surname: surname,
@@ -198,38 +207,39 @@ class DialogPatientState extends State<DialogPatient> {
                       gender: gender,
                     );
 
-                    // Agrega el nuevo paciente a la lista
+                    // Adds the new Patient to the list
                     setState(() {
                       widget.patients.add(newPatient);
                     });
 
-                    // Cierra el diálogo
+                    // Closes the dialog
                     Navigator.of(context).pop();
                     showDialog(
                       context: context,
+                      // Uses PopUp nº1
                       builder: (BuildContext context) {
-                        const popup = Popup(
-                            1); // Utiliza el índice 3 para Usuario eliminado
+                        const popup = Popup(1);
+                        // Close the popup after 2 seconds
                         Future.delayed(const Duration(seconds: 2), () {
-                          Navigator.of(context)
-                              .pop(); // Cierra el popup después de 1 segundo
+                          Navigator.of(context).pop();
                         });
 
                         return popup;
                       },
                     );
+                    //Updates the Ui after adding a patient
                     widget.updateUI();
                   } else {
+                    //If some field is not field shows this error snackbar
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
                           'Please fill in all the required fields.',
                           style: TextStyle(color: Colors.white),
                         ),
-                        backgroundColor: Colors.red, // Fondo rojo
+                        backgroundColor: Colors.red,
                       ),
                     );
-                    // Aquí puedes mostrar un mensaje de error o validar los campos según tus necesidades
                   }
                 },
                 child: const Text(

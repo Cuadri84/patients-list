@@ -10,6 +10,7 @@ class StartPage extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
+          //Background image of the woman walking
           image: AssetImage('assets/woman.png'),
           fit: BoxFit.cover,
         ),
@@ -33,6 +34,7 @@ class StartPage extends StatelessWidget {
             height: 40,
             child: ElevatedButton(
               onPressed: () {
+                // Navigate to the MainPage when the button is pressed.
                 Navigator.of(context).pushReplacement(
                     MaterialPageRoute(builder: (context) => const MainPage()));
               },

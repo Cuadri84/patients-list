@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:technaid_test/constants/colors.dart';
-import 'package:technaid_test/dialogs/dialog_patient.dart';
 
+import '../constants/colors.dart';
+import '../dialogs/dialog_patient.dart';
 import '../models/patient_model.dart';
 import '../widgets/single_patient.dart';
 
@@ -14,17 +14,18 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  // This function retrieves the current date in the "Month dd, yyyy" format.
   String getCurrentDate() {
     final now = DateTime.now();
     final formatter = DateFormat('MMMM dd, yyyy');
     return formatter.format(now);
   }
 
-  int selectedPatientIndex = -1; // Índice del paciente seleccionado
+  // Index of the selected patient
+  int selectedPatientIndex = -1;
 
   List<PatientData> patients = [];
   List<PatientData> filteredPatients = [];
-
   TextEditingController searchController = TextEditingController();
 
   @override
@@ -33,10 +34,12 @@ class _MainPageState extends State<MainPage> {
     filteredPatients = patients;
   }
 
+  // Updates the user interface.
   void updateUI() {
     setState(() {});
   }
 
+  // Removes a patient from the list.
   void removePatient(PatientData patient) {
     setState(() {
       patients.remove(patient);
@@ -44,13 +47,14 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+  // Searches for patients based on their name or surname.
   void searchPatients(String query) {
     setState(() {
       if (query.isEmpty) {
-        // Si el campo de búsqueda está vacío, muestra todos los pacientes
+        // If the search field is empty, display all patients.
         filteredPatients = patients;
       } else {
-        // Filtra la lista de pacientes según el nombre o el apellido
+        // Filters the patient list based on name or surname.
         filteredPatients = patients.where((patient) {
           final fullName = '${patient.name} ${patient.surname}';
           return fullName.toLowerCase().contains(query.toLowerCase());
@@ -59,11 +63,12 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+  // Allows editing a patient's information in the list.
   void onEdit(PatientData editedPatient, int index) {
     if (index >= 0 && index < patients.length) {
-      // Asegúrate de que el índice sea válido
-      patients[index] = editedPatient; // Actualiza el paciente en la lista
-      setState(() {}); // Refresca la interfaz de usuario
+      // Make sure the index is valid and updates the patient in the list
+      patients[index] = editedPatient;
+      setState(() {});
     }
   }
 
@@ -75,6 +80,7 @@ class _MainPageState extends State<MainPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             if (selectedPatientIndex >= 0)
+              // Display patient's name if one is selected.
               Expanded(
                 child: Text(
                   '${filteredPatients[selectedPatientIndex].name} ${filteredPatients[selectedPatientIndex].surname}',
@@ -87,6 +93,7 @@ class _MainPageState extends State<MainPage> {
                 ),
               )
             else
+              // Display a welcome message if no patient is selected.
               const Text(
                 "Hi, Welcome",
                 style: TextStyle(
@@ -96,6 +103,7 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
             if (selectedPatientIndex >= 0)
+              // Display patient information when a patient is selected.
               const Row(
                 children: [
                   Text(
@@ -113,6 +121,7 @@ class _MainPageState extends State<MainPage> {
                 ],
               )
             else
+              // Display the current date if no patient is selected.
               Text(
                 getCurrentDate(),
                 style: const TextStyle(
@@ -134,6 +143,12 @@ class _MainPageState extends State<MainPage> {
       ),
       body: GestureDetector(
         onTap: () {
+          //Dismiss keyboard if the textfield is not press
+          FocusScopeNode currentFocus = FocusScope.of(context);
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+          //Selects the touched patient
           setState(() {
             selectedPatientIndex = -1;
           });
@@ -198,6 +213,7 @@ class _MainPageState extends State<MainPage> {
                 ),
               ),
               patients.isEmpty
+                  //If list of patients is empty displays a text
                   ? const Text(
                       "Empty List",
                       style: TextStyle(
@@ -207,6 +223,7 @@ class _MainPageState extends State<MainPage> {
                         fontWeight: FontWeight.w100,
                       ),
                     )
+                  //If list is not empty displays the patients
                   : Expanded(
                       child: ListView.builder(
                         itemCount: filteredPatients.length,
@@ -214,11 +231,9 @@ class _MainPageState extends State<MainPage> {
                           final patient = filteredPatients[index];
                           return SinglePatient(
                             patient: patient,
-                            isSelected: index ==
-                                selectedPatientIndex, // Comprueba si está seleccionado
+                            isSelected: index == selectedPatientIndex,
                             filteredPatients: filteredPatients,
                             onTap: () {
-                              // Maneja el evento onTap y actualiza el índice del paciente seleccionado
                               setState(() {
                                 selectedPatientIndex = index;
                               });
@@ -227,8 +242,7 @@ class _MainPageState extends State<MainPage> {
                               removePatient(patient);
                             },
                             onEdit: (editedPatient) {
-                              onEdit(editedPatient,
-                                  index); // Pasa el índice a la función onEdit
+                              onEdit(editedPatient, index);
                             },
                           );
                         },
@@ -238,6 +252,8 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
       ),
+
+      //FAB thats shows the dialog to add new patients
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
