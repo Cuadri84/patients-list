@@ -96,7 +96,7 @@ class DialogPatientState extends State<DialogPatient> {
             _selectDate(context);
           },
           decoration: InputDecoration(
-            hintText: '* Birthday',
+            hintText: '* Birthdate',
             hintStyle: const TextStyle(
               fontSize: 20,
               color: Colors.black,
@@ -120,22 +120,8 @@ class DialogPatientState extends State<DialogPatient> {
         const SizedBox(height: 8),
 
         //Field to select the gender
-        DropdownButtonFormField<String>(
-          value: selectedGender,
-          onChanged: (value) {
-            setState(() {
-              selectedGender = value;
-            });
-          },
-          items: <String>['male', 'female', 'other']
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-          icon: const Icon(Icons.expand_more),
-          borderRadius: BorderRadius.circular(15.0),
+        TextFormField(
+          controller: TextEditingController(text: selectedGender),
           decoration: InputDecoration(
             hintText: '* Gender',
             hintStyle: const TextStyle(
@@ -148,8 +134,53 @@ class DialogPatientState extends State<DialogPatient> {
               borderRadius: BorderRadius.circular(15.0),
             ),
           ),
+          readOnly: true,
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text("Select Gender"),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                        title: const Text("Male"),
+                        onTap: () {
+                          setState(() {
+                            selectedGender = "Male";
+                          });
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      ListTile(
+                        title: const Text("Female"),
+                        onTap: () {
+                          setState(() {
+                            selectedGender = "Female";
+                          });
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      ListTile(
+                        title: const Text("Other"),
+                        onTap: () {
+                          setState(() {
+                            selectedGender = "Other";
+                          });
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
         ),
         const SizedBox(height: 21),
+
+        //Cancel and Save  buttons
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[

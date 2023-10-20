@@ -8,10 +8,10 @@ import '../popups/popup.dart';
 class SinglePatient extends StatefulWidget {
   final PatientData patient;
   final bool isSelected;
-  final List<PatientData> filteredPatients; // Pasar solo la lista filtrada
+  final List<PatientData> filteredPatients;
   final VoidCallback onTap;
   final VoidCallback onDelete;
-  final ValueChanged<PatientData> onEdit; // Agrega el parámetro onEdit
+  final ValueChanged<PatientData> onEdit;
 
   const SinglePatient({
     Key? key,
@@ -20,7 +20,7 @@ class SinglePatient extends StatefulWidget {
     required this.filteredPatients,
     required this.onTap,
     required this.onDelete,
-    required this.onEdit, // Añade el parámetro onEdit
+    required this.onEdit,
   }) : super(key: key);
 
   @override
@@ -39,9 +39,7 @@ class SinglePatientState extends State<SinglePatient> {
             color: greyBackground,
             borderRadius: BorderRadius.circular(20.0),
             border: Border.all(
-              color: widget.isSelected
-                  ? Colors.black
-                  : Colors.transparent, // Aplica el borde según isSelected
+              color: widget.isSelected ? Colors.black : Colors.transparent,
               width: widget.isSelected ? 1.0 : 0.0,
             ),
           ),
@@ -51,6 +49,7 @@ class SinglePatientState extends State<SinglePatient> {
                 width: 10,
               ),
               Expanded(
+                //Shows name, birthdate and gender
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -92,8 +91,7 @@ class SinglePatientState extends State<SinglePatient> {
                             style: TextStyle(
                               fontSize: 20,
                               fontFamily: "Futura",
-                              fontWeight:
-                                  FontWeight.bold, // Estilo para "Gender:"
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                           TextSpan(
@@ -109,6 +107,8 @@ class SinglePatientState extends State<SinglePatient> {
                   ],
                 ),
               ),
+
+              //edit,delete icons
               Row(
                 children: [
                   IconButton(
@@ -121,12 +121,43 @@ class SinglePatientState extends State<SinglePatient> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          return EditDialog(
-                            patient: widget.patient,
-                            onEdit: (editedPatient) {
-                              // Aquí puedes realizar las actualizaciones necesarias en el paciente.
-                              widget.onEdit(editedPatient);
-                            },
+                          return AlertDialog(
+                            backgroundColor: Colors.white,
+                            content: Stack(
+                              children: [
+                                SizedBox(
+                                  width: 500,
+                                  height: 391,
+                                  child: EditDialog(
+                                    patient: widget.patient,
+                                    onEdit: (editedPatient) {
+                                      widget.onEdit(editedPatient);
+                                    },
+                                  ),
+                                ),
+                                Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: Colors.grey,
+                                      ),
+                                      padding: const EdgeInsets.all(1),
+                                      child: const Icon(
+                                        Icons.close,
+                                        color: Colors.white,
+                                        size: 18,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           );
                         },
                       );
@@ -139,18 +170,18 @@ class SinglePatientState extends State<SinglePatient> {
                       size: 33,
                     ),
                     onPressed: () {
-                      // Realiza la lógica de eliminación aquí, por ejemplo:
                       widget.onDelete();
 
-                      // Luego, muestra el popup "Usuario eliminado".
+                      // Shows popup deleted patient
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
+                          // Uses Popup with index 3
                           const popup = Popup(
                               3); // Utiliza el índice 3 para Usuario eliminado
                           Future.delayed(const Duration(seconds: 2), () {
-                            Navigator.of(context)
-                                .pop(); // Cierra el popup después de 1 segundo
+                            //Closes popup after 2 seconds
+                            Navigator.of(context).pop();
                           });
 
                           return popup;
