@@ -79,7 +79,8 @@ class _MainPageState extends State<MainPage> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            if (selectedPatientIndex >= 0)
+            if (selectedPatientIndex >= 0 &&
+                selectedPatientIndex < filteredPatients.length)
               // Display patient's name if one is selected.
               Expanded(
                 child: Text(
@@ -212,8 +213,8 @@ class _MainPageState extends State<MainPage> {
                   ],
                 ),
               ),
+              //If list of patients is empty displays a text
               patients.isEmpty
-                  //If list of patients is empty displays a text
                   ? const Text(
                       "Empty List",
                       style: TextStyle(
